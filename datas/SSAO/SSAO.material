@@ -1,0 +1,89 @@
+vertex_program DeferredVertexShader glsl
+{
+	source SSAO/DeferredShader.vert
+
+	default_params
+	{
+		param_named_auto ogre_ModelViewProjectMatrix worldviewproj_matrix
+		param_named_auto ogre_ModelViewMatrix worldview_matrix
+		param_named_auto ogre_NormalMatrix inverse_transpose_worldview_matrix
+		param_named_auto farDis far_clip_distance
+	}
+}
+
+fragment_program DeferredFragmentShader glsl
+{
+	source SSAO/DeferredShader.frag
+}
+
+material SSAOMat/DeferredRender
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref DeferredVertexShader
+			{}
+			fragment_program_ref DeferredFragmentShader
+			{}
+		}
+	}
+}
+
+#----------------------------------------------------------------------------------------
+
+vertex_program SSAOVertexShader glsl
+{
+	source SSAO/SSAOShader.vert
+
+	default_params
+	{
+		param_named_auto ogre_ModelViewProjectMatrix worldviewproj_matrix
+	}
+}
+
+fragment_program SSAOFragmentShader glsl
+{
+	source SSAO/SSAOShader.frag
+	
+	default_params
+	{
+		param_named postexture int 0
+		param_named normtexture int 1
+		param_named offsettexture int 2
+		param_named lightDir float3 0.0 0.0 1.0
+		param_named shininess float 128.0
+		param_named aoDensity float 0.01
+		param_named contrasty float 50.0
+		//ssao/nsao
+		param_named OffsetTexSize float3 4.0 4.0 16.0
+		param_named useSSAO int 1
+		//
+		param_named_auto farDis far_clip_distance
+	}
+}
+
+material SSAOMat/SSAORender
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref SSAOVertexShader
+			{}
+			fragment_program_ref SSAOFragmentShader
+			{}
+			texture_unit
+			{
+			//	content_type compositor DeferredCompositor mrt_texture 0
+			}
+			texture_unit
+			{
+			//	content_type compositor DeferredCompositor mrt_texture 1
+			}
+			texture_unit
+			{
+			}
+		}
+	}
+}

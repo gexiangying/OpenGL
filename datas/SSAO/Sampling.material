@@ -1,0 +1,41 @@
+vertex_program SamplingVertexShader glsl
+{
+	source SamplingShader.vert
+
+	default_params
+	{
+		param_named_auto ogre_ModelViewProjectMatrix worldviewproj_matrix
+	}
+}
+
+fragment_program SamplingFragmentShader glsl
+{
+	source SamplingShader.frag
+	
+	default_params
+	{
+		param_named scenetexture int 0
+		param_named kernelSideSize int 3
+		param_named kenelValue0 float4 1 1 1 0
+		param_named kenelValue1 float4 1 1 1 0
+		param_named kenelValue2 float4 1 1 1 0	
+		param_named_auto viewportSize viewport_size			
+	}
+}
+
+material SSAOMat/Sampling
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref SamplingVertexShader
+			{}
+			fragment_program_ref SamplingFragmentShader
+			{}
+			texture_unit
+			{
+			}
+		}
+	}
+}

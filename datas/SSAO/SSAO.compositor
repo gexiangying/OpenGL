@@ -1,0 +1,32 @@
+compositor SSAO/SSAOCompositor
+{
+	technique
+	{
+		//mrt-0 Vertex Position
+		//mrt-1 Vertex Normal & Depth
+		texture mrt_texture target_width target_height PF_FLOAT32_RGBA PF_FLOAT32_RGBA
+		target mrt_texture
+		{
+			input none
+			
+			//very important step(clear buffers)
+			pass clear
+			{
+			}
+			
+			pass render_scene
+			{
+			}
+		}
+		target_output
+		{
+			input none
+			pass render_quad
+			{
+				material SSAOMat/SSAORender
+				input 0 mrt_texture 0
+				input 1 mrt_texture 1
+			}
+		}
+	}
+}
