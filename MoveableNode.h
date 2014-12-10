@@ -12,6 +12,8 @@ public:
 	MoveableNode(aiNode *node, const aiScene *scene);
 	~MoveableNode();
 
+	void setProgram(Program *program, bool needOverride = false);
+
 	void draw(const glm::mat4x4 &modelView);
 
 	void addMesh(Mesh *subMesh);

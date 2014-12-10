@@ -4,6 +4,7 @@
 #include <assimp/material.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include "Program.h"
 
 class Mesh
 {
@@ -12,6 +13,7 @@ public:
 	Mesh(aiMesh *mesh, aiMaterial *material);
 	~Mesh();
 
+	void setProgram(Program *program);
 	void draw(const glm::mat4x4 &modelView);
 
 private:
@@ -19,11 +21,10 @@ private:
 	void fillVertices();
 	void fillIndices();
 	void createShaderProgram();
-	bool CompileShader(GLuint shader);
 
 private:
 
-	GLuint _program;
+	Program *_program;
 	GLuint _VAO;
 	aiMesh *_data;
 	aiMaterial *_material;

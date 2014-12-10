@@ -14,6 +14,8 @@ public:
 	Model(const std::string &file);
 	~Model();
 
+	void setProgram(Program *program, bool needOverride = false);
+
 	void draw(const glm::mat4x4 &modelView);
 
 private:

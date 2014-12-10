@@ -1,18 +1,17 @@
 #include "Mesh.h"
-#include <glm/gtc/type_ptr.hpp>
 
 static const GLchar *Mesh_V_ShaderSource[] = {
 	"#version 430                                                    \n"
 	"layout (location = 0) in vec3 position;                        \n"
 	"layout (location = 1) in vec3 normal;                          \n"
 	//"layout (location = 2) in ivec4 connection;                   \n"
-	"uniform mat4 mvp_Mat;                                          \n"
-	"uniform mat3 normal_Mat;                                       \n"
+	"uniform mat4 u_ModelViewProjectMat;                                          \n"
+	"uniform mat3 u_NormalMat;                                       \n"
 	"out vec3 v_normal;                                             \n"
 	"void main()                                                     \n"
 	"{                                                               \n"
-	"	v_normal = normal_Mat * normal;                              \n"
-	"	gl_Position = mvp_Mat * vec4(position, 1.0);                 \n"
+	"	v_normal = u_NormalMat * normal;                              \n"
+	"	gl_Position = u_ModelViewProjectMat * vec4(position, 1.0);                 \n"
 	"}                                                               \n"
 };
 
@@ -22,8 +21,8 @@ static const GLchar *Mesh_F_ShaderSource[] = {
 	"out vec4 color;                        \n"
 	"void main(){                        \n"
 	"	vec3 normal = normalize(v_normal);                        \n"
-	"	float factor = max(0.0, dot(normal, vec3(1.0, 0.0, 0.0))); \n"
-	"	color = vec4(factor);                        \n"
+	//"	float factor = max(0.0, dot(normal, normalize(vec3(1.0, 0.0, 1.0)))); \n"
+	"	color = vec4(normal, 1.0);                        \n"
 	"}                        \n"
 };
 
@@ -33,6 +32,7 @@ Mesh::Mesh(aiMesh *mesh, aiMaterial *material)
 	, _material(material)
 	, _drawElementCount(0)
 	, _drawType(GL_TRIANGLES)
+	, _program(nullptr)
 {
 	glGenVertexArrays(1, &_VAO);
 	glBindVertexArray(_VAO);
@@ -50,19 +50,8 @@ Mesh::~Mesh()
 void Mesh::draw(const glm::mat4x4 &modelView)
 {
 	if (0 < _drawElementCount){
-		glUseProgram(_program);
+		_program->apply(modelView);
 		glBindVertexArray(_VAO);
-
-			GLint loc = glGetUniformLocation(_program, "mvp_Mat");
-			glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(modelView));
-			loc = glGetUniformLocation(_program, "normal_Mat");
-			glm::mat3 normalMat(modelView[0].x, modelView[1].x, modelView[2].x
-				              , modelView[0].y, modelView[1].y, modelView[2].y
-							  , modelView[0].z, modelView[1].z, modelView[2].z);
-			normalMat = glm::inverse(normalMat);
-			normalMat = glm::transpose(normalMat);
-			glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(normalMat));
-
 			glDrawElements(_drawType, _drawElementCount, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 	}
@@ -148,35 +137,13 @@ void Mesh::fillIndices()
 
 void Mesh::createShaderProgram()
 {
-	_program = glCreateProgram();
-	GLuint vShader= glCreateShader(GL_VERTEX_SHADER);
-	GLuint fShader= glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(vShader, 1, Mesh_V_ShaderSource, nullptr);
-	glShaderSource(fShader, 1, Mesh_F_ShaderSource, nullptr);
-	CompileShader(vShader);
-	CompileShader(fShader);
-
-	glAttachShader(_program, vShader);
-	glAttachShader(_program, fShader);
-	glLinkProgram(_program);
-	glDeleteShader(vShader);
-	glDeleteShader(fShader);
+	if (!_program) _program = new Program;
+	_program->attachShader(GL_VERTEX_SHADER, Mesh_V_ShaderSource);
+	_program->attachShader(GL_FRAGMENT_SHADER, Mesh_F_ShaderSource);
+	_program->link();
 }
 
-bool Mesh::CompileShader( GLuint shader )
+void Mesh::setProgram( Program *program )
 {
-	glCompileShader(shader);
-	GLint state; 
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &state);
-	if (true){
-		GLint maxLen;
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLen);
-		if (maxLen > 0){
-			GLchar *errors = new GLchar[maxLen];
-			glGetShaderInfoLog(shader, maxLen, &maxLen, errors);
-			printf("%s", errors);
-			delete[] errors;
-		}
-	}
-	return state == GL_TRUE? true: false;
+	_program = program;
 }

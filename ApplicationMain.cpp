@@ -5,9 +5,10 @@ int main(int argc, char *argv[]){
 	std::string apps[] = {
 		"TriangleApp",
 		"TransformFeedbackApp",
-		"ModelImporterApp"
+		"ModelImporterApp",
+		"AdvanceLightApp"
 	};
-	Application *app = ApplicationFactory::Instance()->CreateApplication(apps[2]);
+	Application *app = ApplicationFactory::Instance()->CreateApplication(apps[3]);
 
 	app->Init(argc, argv);
 	app->Run();

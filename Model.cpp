@@ -45,3 +45,8 @@ void Model::loadScene()
 	_aiScene = aiImportFile(_filePath.c_str(),aiProcessPreset_TargetRealtime_MaxQuality);
 	_rootNode = new MoveableNode(_aiScene->mRootNode, _aiScene);
 }
+
+void Model::setProgram( Program *program, bool needOverride /*= false*/ )
+{
+	_rootNode->setProgram(program, needOverride);
+}

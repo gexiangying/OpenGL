@@ -2,6 +2,7 @@
 #include "TransformFeedbackApp.h"
 #include "TriangleApp.h"
 #include "ModelImporterApp.h"
+#include "AdvanceLightApp.h"
 
 ApplicationFactory::ApplicationFactory()
 {
@@ -28,6 +29,9 @@ Application* ApplicationFactory::CreateApplication( const std::string &type )
 
 	if (type == "ModelImporterApp")
 		return new ModelImporterApp;
+
+	if (type == "AdvanceLightApp")
+		return new AdvanceLightApp;
 
 	return nullptr;
 }

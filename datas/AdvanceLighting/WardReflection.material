@@ -1,0 +1,41 @@
+vertex_program WardReflectionVertexShader glsl
+{
+	source WardReflection.vert
+	
+	default_params
+	{
+		param_named_auto ogre_ModelViewProjectMatrix worldviewproj_matrix
+		param_named_auto ogre_ModelViewMatrix worldview_matrix
+		param_named_auto ogre_NormalMatrix inverse_transpose_worldview_matrix
+		param_named LightPos float4 0.0 10.0 0.0 1.0
+	}
+}
+
+fragment_program WardReflectionFragmentShader glsl
+{
+	source WardReflection.frag
+	
+	default_params
+	{
+		param_named LightColor float4 1.0 1.0 1.0 1.0
+		param_named DiffColor float4 0.8 0.8 0.8 1.0
+		param_named SpecColor float4 0.8 0.8 0.8 1.0
+	}
+}
+
+material WardReflectionMaterial
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref WardReflectionVertexShader
+			{
+			}
+			
+			fragment_program_ref WardReflectionFragmentShader
+			{
+			}
+		}
+	}
+}
