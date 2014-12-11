@@ -20,6 +20,10 @@ protected:
 
 	virtual void Setup() = 0;
 	virtual void Render(double elapseTime) = 0;
+	virtual void mouseClickEvent(int button, int state, int x, int y){};
+	virtual void mouseMoveEvent(int x, int y){};
+	virtual void keyboardEvent(unsigned char key, int x, int y){};
+	virtual void specialKeyEvent(int key, int x, int y){};
 	void printGLInfo();
 	bool CompileShader(GLuint shader);
 
@@ -33,8 +37,10 @@ protected:
 	float tb_project_to_sphere( float r, float x, float y );
 
 	static void renderStatic();
-	static void mouseClickEvent(int button, int state, int x, int y);
-	static void mouseMoveEvent(int x, int y);
+	static void mouseClickEventStatic(int button, int state, int x, int y);
+	static void mouseMoveEventStatic(int x, int y);
+	static void keyboardEventStatic(unsigned char key, int x, int y);
+	static void specialKeyEventStatic(int key, int x, int y);
 	static glm::vec2 convertScreenCoordsToGLCoords(int x, int y);
 
 protected:

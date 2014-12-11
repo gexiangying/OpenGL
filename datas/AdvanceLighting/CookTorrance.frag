@@ -1,4 +1,4 @@
-#version 400
+#version 430
 layout(location=0) out vec4 FragColor;
 uniform vec4 LightColor;
 uniform vec4 DiffColor;

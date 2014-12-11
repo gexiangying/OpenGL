@@ -1,8 +1,8 @@
-#version 400
+#version 430
 layout(location=0) out vec4 FragColor;
 uniform vec4 LightColor;
 uniform vec4 DiffColor;
-const float minnaertFactor = 0.8;
+uniform float minnaertFactor;
 in vec3 eNormal;
 in vec4 eVertex;
 in vec4 eLightPos;

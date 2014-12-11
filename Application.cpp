@@ -49,8 +49,10 @@ void Application::Init(int argc, char *argv[])
 	glutCreateWindow(Displayer::Instance()->GetWindowTitle().c_str());
 	
 	glutDisplayFunc(Application::renderStatic);
-	glutMouseFunc(Application::mouseClickEvent);
-	glutMotionFunc(Application::mouseMoveEvent);
+	glutMouseFunc(Application::mouseClickEventStatic);
+	glutMotionFunc(Application::mouseMoveEventStatic);
+	glutKeyboardFunc(Application::keyboardEventStatic);
+	glutSpecialFunc(Application::specialKeyEventStatic);
 	glewInit();
 	initCamera();
 	Setup();
@@ -102,7 +104,7 @@ bool Application::CompileShader(GLuint shader){
 	return state == GL_TRUE? true: false;
 }
 
-void Application::mouseClickEvent( int button, int state, int x, int y )
+void Application::mouseClickEventStatic( int button, int state, int x, int y )
 {
 	_appPtr->_g0 = convertScreenCoordsToGLCoords(x, y);
 
@@ -121,9 +123,11 @@ void Application::mouseClickEvent( int button, int state, int x, int y )
 	if (button == GLUT_WHEEL_UP){
 		_appPtr->zoomCamera(glm::vec2(0.0f), glm::vec2(0.1f));
 	}
+
+	_appPtr->mouseClickEvent(button, state, x, y);
 }
 
-void Application::mouseMoveEvent( int x, int y )
+void Application::mouseMoveEventStatic( int x, int y )
 {
 	_appPtr->_g1 = convertScreenCoordsToGLCoords(x, y);
 	//std::cout<<"g1 - g0: "<<_appPtr->_g1.x - _appPtr->_g0.x<<", "<<_appPtr->_g1.y - _appPtr->_g0.y<<std::endl;
@@ -140,6 +144,8 @@ void Application::mouseMoveEvent( int x, int y )
 	if (_appPtr->_currentButton == GLUT_RIGHT_BUTTON){
 		_appPtr->zoomCamera(_appPtr->_g0, _appPtr->_g1);
 	}
+
+	_appPtr->mouseMoveEvent(x, y);
 
 	_appPtr->_g0 = _appPtr->_g1;
 }
@@ -231,4 +237,14 @@ void Application::zoomCamera( const glm::vec2 &g0, const glm::vec2 &g1 )
 	float zoomDleta = g0.y - g1.y;
 	_translate.z += zoomDleta * 20.0f;
 	updateMVPMatrix();
+}
+
+void Application::keyboardEventStatic( unsigned char key, int x, int y )
+{
+	_appPtr->keyboardEvent(key, x, y);
+}
+
+void Application::specialKeyEventStatic( int key, int x, int y )
+{
+	_appPtr->specialKeyEvent(key, x, y);
 }

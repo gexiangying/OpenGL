@@ -1,13 +1,13 @@
-#version 400
+#version 430
 layout(location=0) out vec4 FragColor;
 uniform vec4 LightColor;
 uniform vec4 DiffColor;
 uniform vec4 SpecColor;
-const float roughness = 0.5;
-const float roughnessx = 0.9;
-const float roughnessy = 0.1;
+uniform float roughness;
+uniform float roughnessx;
+uniform float roughnessy;
+uniform int isotropicOranisotropic;
 const float PI = 3.1415926;
-const int isotropicOranisotropic = 1;
 in vec3 eNormal;
 in vec4 eVertex;
 in vec4 eLightPos;

@@ -15,7 +15,7 @@ void main()
 	eNormal = u_NormalMat * normal;
 	eNormal = normalize(eNormal);
 	eVertex = u_ModelViewMat * vec4(vertex, 1.0);
-	eLightPos = u_ModelViewMat * LightPos;
+	eLightPos = LightPos;
 	eOrigin = u_ModelViewMat * vec4(0.0, 0.0, 0.0, 1.0);
 	gl_Position = u_ModelViewProjectMat * vec4(vertex, 1.0);
 }
