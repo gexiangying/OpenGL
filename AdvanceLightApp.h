@@ -23,7 +23,7 @@ public:
 	}
 
 	virtual void Setup() override {
-		_model = new Model("datas/teapot.obj");
+		_model = new Model("datas/sphere.obj");
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		{
@@ -52,6 +52,21 @@ public:
 			program->setUniformf("Refractiable", 0.5f);
 			program->setUniformf("Dm", 0.5f);
 			program->setUniformf("Dc", 0.5f);
+			_advanceLightProgramList.push_back(program);
+		}
+
+		{
+			Program *program = new Program;
+			program->setName("CookTorrance_crytek");
+			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/CookTorrance_crytek.vert");
+			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/CookTorrance_crytek.frag");
+			program->link();
+			program->setUniform4f("LightPos", glm::vec4(150.0f, 150.0f, 0.0f, 1.0f));
+			program->setUniform4f("LightColor", glm::vec4(1.0f));
+			program->setUniform4f("DiffColor", glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+			program->setUniform4f("SpecColor", glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+			program->setUniformf("Refractiable", 0.5f);
+			program->setUniformf("smoothness", 0.5f);
 			_advanceLightProgramList.push_back(program);
 		}
 
