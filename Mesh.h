@@ -4,23 +4,28 @@
 #include <assimp/material.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include <string>
 #include "Program.h"
+#include "RenderableObject.h"
 
-class Mesh
+class Renderer;
+class Mesh : public RenderableObject
 {
 public:
 	
-	Mesh(aiMesh *mesh, aiMaterial *material);
+	Mesh(aiMesh *mesh, aiMaterial *material, const std::string &path);
 	~Mesh();
 
 	void setProgram(Program *program);
-	void draw(const glm::mat4x4 &modelView);
+	virtual void draw(const Renderer *renderer) override;
 
 private:
 
 	void fillVertices();
 	void fillIndices();
 	void createShaderProgram();
+	void initMaterial();
+	void initDiffuse();
 
 private:
 
@@ -31,5 +36,8 @@ private:
 
 	unsigned int _drawElementCount;
 	GLenum _drawType;
+	std::map<GLuint, std::pair<GLuint, GLuint> > _textureUnitMap;
+
+	std::string _folderPath;
 };
 

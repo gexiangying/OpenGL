@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <ctime>
+#include "Camera.h"
+#include "Renderer.h"
 
 class Displayer;
 class Application
@@ -31,7 +33,7 @@ protected:
 	void rotateCamera(const glm::vec2 &g0, const glm::vec2 &g1);
 	void moveCamera(const glm::vec2 &g0, const glm::vec2 &g1);
 	void zoomCamera(const glm::vec2 &g0, const glm::vec2 &g1);
-	void updateMVPMatrix();
+	void updateViewMatrix();
 
 	void trackball( glm::vec3 & axis, float & angle, float p1x, float p1y, float p2x, float p2y );
 	float tb_project_to_sphere( float r, float x, float y );
@@ -58,6 +60,7 @@ protected:
 	glm::vec3 _center;
 	glm::vec3 _translate;
 
-	glm::mat4 _viewMat;
+	Camera *_camera;
+	Renderer _renderer;
 };
 

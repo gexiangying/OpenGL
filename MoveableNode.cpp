@@ -2,7 +2,7 @@
 #include <assimp/scene.h>
 
 
-MoveableNode::MoveableNode(aiNode *node, const aiScene *scene)
+MoveableNode::MoveableNode(aiNode *node, const aiScene *scene, const std::string &path)
 	: _node(node)
 	, _rootScene(scene)
 {
@@ -12,8 +12,8 @@ MoveableNode::MoveableNode(aiNode *node, const aiScene *scene)
 					  , mat.c1, mat.c2, mat.c3, mat.c4
 					  , mat.d1, mat.d2, mat.d3, mat.d4);
 
-	buildMeshs();
-	buildChildren();
+	buildMeshs(path);
+	buildChildren(path);
 }
 
 
@@ -43,23 +43,23 @@ Mesh* MoveableNode::getMesh( unsigned int index )
 	return _subMesh[index];
 }
 
-void MoveableNode::draw( const glm::mat4x4 &modelView )
+void MoveableNode::draw( const Renderer *renderer )
 {
 	for (auto iter : _children){
-		iter->draw(modelView * _matrix);
+		iter->draw(renderer);
 	}
 
 	for (auto iter : _subMesh){
-		iter->draw(modelView * _matrix);
+		iter->draw(renderer);
 	}
 }
 
-void MoveableNode::buildMeshs()
+void MoveableNode::buildMeshs(const std::string &path)
 {
 	for (unsigned int i = 0; i < _node->mNumMeshes; ++i){
 		aiMesh *mesh = _rootScene->mMeshes[_node->mMeshes[i]];
 		aiMaterial *material = _rootScene->mMaterials[mesh->mMaterialIndex];
-		Mesh *renderMesh = new Mesh(mesh, material);
+		Mesh *renderMesh = new Mesh(mesh, material, path);
 		addMesh(renderMesh);
 	}
 }
@@ -79,10 +79,10 @@ MoveableNode* MoveableNode::getChild( unsigned int index )
 	return _children[index];
 }
 
-void MoveableNode::buildChildren()
+void MoveableNode::buildChildren(const std::string &path)
 {
 	for (unsigned int i = 0; i < _node->mNumChildren; ++i){
-		MoveableNode *node = new MoveableNode(_node->mChildren[i], _rootScene);
+		MoveableNode *node = new MoveableNode(_node->mChildren[i], _rootScene, path);
 		addChild(node);
 	}
 }

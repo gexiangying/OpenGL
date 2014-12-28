@@ -12,23 +12,34 @@ class AdvanceLightApp : public Application{
 public:
 
 	virtual void Render(double elapseTime) override {
-		GLfloat color[] = {0.5f, 0.5f, 0.5f, 1.0f};
-		glClearBufferfv(GL_COLOR, 0, color);
-		GLfloat depth[] = {1.0f};
-		glClearBufferfv(GL_DEPTH, 0, depth);
-
-		glEnable(GL_DEPTH_TEST);
-		_model->draw(_viewMat);
-		glDisable(GL_DEPTH_TEST);
+		_renderer.render();
 	}
 
 	virtual void Setup() override {
-		_model = new Model("datas/sphere.obj");
+		_model = new Model("datas/teapot.obj");
+		_renderer.attachRenderableObject(_model);
+		_renderer.setClearColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+		_renderer.depthTest(true);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		{
 			Program *program = new Program;
-			program->setName("WarnLighting");
+			program->setName("Crytek_ShaderMode");
+			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/Crytek_ShaderMode.vert");
+			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/Crytek_ShaderMode.frag");
+			program->link();
+			program->setUniform4f("LightPos", glm::vec4(150.0f, 150.0f, 0.0f, 1.0f));
+			program->setUniform4f("LightColor", glm::vec4(0.0f));
+			program->setUniform4f("DiffColor", glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+			program->setUniform4f("SpecColor", glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+			program->setUniformf("Refractiable", 0.5f);
+			program->setUniformf("smoothness", 0.5f);
+			_advanceLightProgramList.push_back(program);
+		}
+
+		{
+			Program *program = new Program;
+			program->setName("WarnLighting_Diffuse");
 			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/WarnLighting.vert");
 			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/WarnLighting.frag");
 			program->link();
@@ -41,7 +52,33 @@ public:
 
 		{
 			Program *program = new Program;
-			program->setName("CookTorrance");
+			program->setName("Minnaert_Diffuse");
+			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/Minnaert.vert");
+			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/Minnaert.frag");
+			program->link();
+			program->setUniform4f("LightPos", glm::vec4(150.0f, 150.0f, 0.0f, 1.0f));
+			program->setUniform4f("LightColor", glm::vec4(1.0f));
+			program->setUniform4f("DiffColor", glm::vec4(1.0f));
+			program->setUniformf("minnaertFactor", 0.8f);
+			_advanceLightProgramList.push_back(program);
+		}
+
+		{
+			Program *program = new Program;
+			program->setName("OrenNayar_Diffuse");
+			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/OrenNayar.vert");
+			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/OrenNayar.frag");
+			program->link();
+			program->setUniform4f("LightPos", glm::vec4(150.0f, 150.0f, 0.0f, 1.0f));
+			program->setUniform4f("LightColor", glm::vec4(1.0f));
+			program->setUniform4f("DiffColor", glm::vec4(1.0f));
+			program->setUniformf("roughness", 0.5f);
+			_advanceLightProgramList.push_back(program);
+		}
+
+		{
+			Program *program = new Program;
+			program->setName("CookTorrance_Reflection");
 			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/CookTorrance.vert");
 			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/CookTorrance.frag");
 			program->link();
@@ -57,7 +94,7 @@ public:
 
 		{
 			Program *program = new Program;
-			program->setName("CookTorrance_crytek");
+			program->setName("CookTorrance_crytek_Reflection");
 			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/CookTorrance_crytek.vert");
 			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/CookTorrance_crytek.frag");
 			program->link();
@@ -72,33 +109,7 @@ public:
 
 		{
 			Program *program = new Program;
-			program->setName("Minnaert");
-			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/Minnaert.vert");
-			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/Minnaert.frag");
-			program->link();
-			program->setUniform4f("LightPos", glm::vec4(150.0f, 150.0f, 0.0f, 1.0f));
-			program->setUniform4f("LightColor", glm::vec4(1.0f));
-			program->setUniform4f("DiffColor", glm::vec4(1.0f));
-			program->setUniformf("minnaertFactor", 0.8f);
-			_advanceLightProgramList.push_back(program);
-		}
-
-		{
-			Program *program = new Program;
-			program->setName("OrenNayar");
-			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/OrenNayar.vert");
-			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/OrenNayar.frag");
-			program->link();
-			program->setUniform4f("LightPos", glm::vec4(150.0f, 150.0f, 0.0f, 1.0f));
-			program->setUniform4f("LightColor", glm::vec4(1.0f));
-			program->setUniform4f("DiffColor", glm::vec4(1.0f));
-			program->setUniformf("roughness", 0.5f);
-			_advanceLightProgramList.push_back(program);
-		}
-
-		{
-			Program *program = new Program;
-			program->setName("SchlickReflection");
+			program->setName("Schlick_Reflection");
 			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/SchlickReflection.vert");
 			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/SchlickReflection.frag");
 			program->link();
@@ -112,7 +123,7 @@ public:
 
 		{
 			Program *program = new Program;
-			program->setName("WardReflection");
+			program->setName("Ward_Reflection");
 			program->attachShader(GL_VERTEX_SHADER, "datas/AdvanceLighting/WardReflection.vert");
 			program->attachShader(GL_FRAGMENT_SHADER, "datas/AdvanceLighting/WardReflection.frag");
 			program->link();
@@ -149,6 +160,34 @@ public:
 			_model->setProgram(_advanceLightProgramList[currentProgram]);
 			std::cout<<"--------------"<<_advanceLightProgramList[currentProgram]->getName()<<"--------------"<<std::endl;
 		}
+
+		//static float smoothness = 0.5f;
+		//static float Refractiable = 0.5f;
+
+		//if (key == GLUT_KEY_PAGE_UP){
+		//	smoothness += 0.1f;
+		//	if (smoothness > 1.0f) smoothness = 1.0f;
+		//	_advanceLightProgramList[0]->setUniformf("smoothness", smoothness);
+		//}
+		//if (key == GLUT_KEY_PAGE_DOWN){
+		//	smoothness -= 0.1f;
+		//	if (smoothness < 0.0f) smoothness = 0.0f;
+		//	_advanceLightProgramList[0]->setUniformf("smoothness", smoothness);
+		//}
+		//if (key == GLUT_KEY_HOME){
+		//	Refractiable += 0.1f;
+		//	if (Refractiable > 1.0f) Refractiable = 1.0f;
+		//	_advanceLightProgramList[0]->setUniformf("Refractiable", Refractiable);
+		//}
+		//if (key == GLUT_KEY_END){
+		//	Refractiable -= 0.1f;
+		//	if (Refractiable < 0.0f) Refractiable = 0.0f;
+		//	_advanceLightProgramList[0]->setUniformf("Refractiable", Refractiable);
+		//}
+	}
+
+	virtual void keyboardEvent(unsigned char key, int x, int y) override
+	{
 	}
 
 protected:

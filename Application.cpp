@@ -11,6 +11,8 @@ Application::Application()
 	: _currentButton(-1)
 {
 	_appPtr = this;
+	_camera = new Camera;
+	_renderer.setCamera(_camera);
 }
 
 
@@ -201,7 +203,7 @@ void Application::rotateCamera( const glm::vec2 &g0, const glm::vec2 &g1 )
 	glm::vec3 axes;
 	trackball(axes, angle, g0.x, g0.y, g1.x, g1.y);
 	_rotation = glm::angleAxis(angle * 3.0f, axes) * _rotation;
-	updateMVPMatrix();
+	updateViewMatrix();
 }
 
 void Application::moveCamera( const glm::vec2 &g0, const glm::vec2 &g1 )
@@ -210,25 +212,25 @@ void Application::moveCamera( const glm::vec2 &g0, const glm::vec2 &g1 )
 	glm::vec2 delta = g0 - g1;
 	delta *= 20.0f;
 	_center += _rotation * glm::vec3(delta, 0.0f);
-	updateMVPMatrix();
+	updateViewMatrix();
 }
 
 void Application::initCamera()
 {
 	_center = glm::vec3(0.0f);
 	_translate = glm::vec3(0.0f, 0.0f, 150.0f);
-	Displayer::Instance()->setProjectionMatrix(glm::perspective(30.0f, (float)Displayer::Instance()->GetWindowSize().x / (float)Displayer::Instance()->GetWindowSize().y, 1.0f, 1000.0f));
-	updateMVPMatrix();
+	_camera->setProjectionMatrixAsPerspective(30.0f, (float)Displayer::Instance()->GetWindowSize().x / (float)Displayer::Instance()->GetWindowSize().y, 1.0f, 1000.0f);
+	updateViewMatrix();
 }
 
-void Application::updateMVPMatrix()
+void Application::updateViewMatrix()
 {
 	glm::mat4 center;
 	center[3] = glm::vec4(_center, 1.0f);
 	glm::mat4 trans;
 	trans[3] = glm::vec4(_translate, 1.0f);
 
-	_viewMat = glm::inverse(center * glm::toMat4(_rotation) * trans);
+	_camera->setViewMatrix(glm::inverse(center * glm::toMat4(_rotation) * trans));
 }
 
 void Application::zoomCamera( const glm::vec2 &g0, const glm::vec2 &g1 )
@@ -236,7 +238,7 @@ void Application::zoomCamera( const glm::vec2 &g0, const glm::vec2 &g1 )
 	if (g0 == g1) return;
 	float zoomDleta = g0.y - g1.y;
 	_translate.z += zoomDleta * 20.0f;
-	updateMVPMatrix();
+	updateViewMatrix();
 }
 
 void Application::keyboardEventStatic( unsigned char key, int x, int y )

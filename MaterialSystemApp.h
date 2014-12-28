@@ -5,26 +5,27 @@
 #include <stdio.h>
 #include "Application.h"
 #include "Model.h"
-#include "Renderer.h"
+#include "TextureManager.h"
+#include "FrameBufferObject.h"
+#include "Program.h"
+#include "Displayer.h"
+#include "RenderQuad.h"
+#include <iostream>
 
-class ModelImporterApp : public Application{
+class MaterialSystemApp : public Application{
 public:
 
 	virtual void Render(double elapseTime) override {
+
 		_renderer.render();
 	}
 
 	virtual void Setup() override {
-		_model = new Model("datas/teapot.obj");
-		_renderer.attachRenderableObject(_model);
-		_renderer.depthTest(true);
+		auto model = new Model("datas/sponza/sponza.obj");
+		_renderer.attachRenderableObject(model);
 		_renderer.setClearColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		_renderer.depthTest(true);
 	}
 
-protected:
-
 private:
-
-	Model *_model;
 };

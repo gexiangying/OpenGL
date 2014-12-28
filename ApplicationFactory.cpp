@@ -3,6 +3,8 @@
 #include "TriangleApp.h"
 #include "ModelImporterApp.h"
 #include "AdvanceLightApp.h"
+#include "MaterialSystemApp.h"
+#include "PostProcessingApp.h"
 
 ApplicationFactory::ApplicationFactory()
 {
@@ -32,6 +34,12 @@ Application* ApplicationFactory::CreateApplication( const std::string &type )
 
 	if (type == "AdvanceLightApp")
 		return new AdvanceLightApp;
+
+	if (type == "MaterialSystemApp")
+		return new MaterialSystemApp;
+
+	if (type == "PostProcessingApp")
+		return new PostProcessingApp;
 
 	return nullptr;
 }

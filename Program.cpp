@@ -1,10 +1,11 @@
 #include "Program.h"
 #include "glm/gtc/type_ptr.hpp"
-#include "Displayer.h"
 #include <fstream>
 
 
 Program::Program()
+	: _isLinked(false)
+	, _isUsed(false)
 {
 	_glProgram = glCreateProgram();
 }
@@ -18,10 +19,10 @@ bool Program::attachShader( GLenum type, const GLchar *sources[] )
 {
 	GLuint shader= glCreateShader(type);
 	glShaderSource(shader, sizeof(sources)/sizeof(*sources), sources, nullptr);
-	if (!CompileShader(shader)) return false;
+	if (!CompileShader(shader, getShaderType(type))) return false;
 
 	glAttachShader(_glProgram, shader);
-
+	_isLinked = false;
 	return true;
 }
 
@@ -43,21 +44,22 @@ bool Program::attachShader( GLenum type, const std::string &file )
 	glShaderSource(shader, 1, &buffer, nullptr);
 	delete [] buffer;
 
-	if (!CompileShader(shader)) return false;
+	if (!CompileShader(shader, getShaderType(type))) return false;
 
 	glAttachShader(_glProgram, shader);
-
+	_isLinked = false;
 	return true;
 }
 
 bool Program::link()
 {
-	glLinkProgram(_glProgram);
-	glUseProgram(_glProgram);
+	if (!_isLinked)
+		glLinkProgram(_glProgram);
+	_isLinked = true;
 	return true;
 }
 
-bool Program::CompileShader( GLuint shader )
+bool Program::CompileShader( GLuint shader, const std::string &type )
 {
 	glCompileShader(shader);
 	GLint state; 
@@ -70,9 +72,8 @@ bool Program::CompileShader( GLuint shader )
 			glGetShaderInfoLog(shader, maxLen, &maxLen, errors);
 
 			if (strcmp(errors, "") != 0){
-				printf("\n--------CompileShader Errors--------\n");
+				printf("\n--------%s Shader Errors--------\n", type.c_str());
 				printf("%s", errors);
-				printf("\n--------CompileShader Errors--------\n");
 			}
 			delete[] errors;
 		}
@@ -80,73 +81,167 @@ bool Program::CompileShader( GLuint shader )
 	return state == GL_TRUE? true: false;
 }
 
-void Program::apply(const glm::mat4 modelView)
+void Program::apply(const glm::mat4 &projection, const glm::mat4 &modelView)
 {
 	glUseProgram(_glProgram);
-	applyInnerUniforms(modelView);
+	applyInnerUniforms(projection, modelView);
+	applyUniforms();
 }
 
-void Program::setUniformi( const GLchar *name, int value )
+void Program::setUniformi( const std::string &name, int value )
 {
-	GLint loc = glGetUniformLocation(_glProgram, name);
-	glUniform1i(loc, value);
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform1i(loc, value);
+	});
 }
 
-void Program::setUniformf( const GLchar *name, float value )
+void Program::setUniformf( const std::string &name, float value )
 {
-	GLint loc = glGetUniformLocation(_glProgram, name);
-	glUniform1f(loc, value);
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform1f(loc, value);
+	});
 }
 
-void Program::setUniformui( const GLchar *name, unsigned int value )
+void Program::setUniformui( const std::string &name, unsigned int value )
 {
-	GLint loc = glGetUniformLocation(_glProgram, name);
-	glUniform1ui(loc, value);
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform1ui(loc, value);
+	});
 }
 
-void Program::setUniform2f( const GLchar *name, const glm::vec2 &value )
+void Program::setUniform2f( const std::string &name, const glm::vec2 &value )
 {
-	GLint loc = glGetUniformLocation(_glProgram, name);
-	glUniform2f(loc, value.x, value.y);
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform2f(loc, value.x, value.y);
+	});
 }
 
-void Program::setUniform3f( const GLchar *name, const glm::vec3 &value )
+void Program::setUniform3f( const std::string &name, const glm::vec3 &value )
 {
-	GLint loc = glGetUniformLocation(_glProgram, name);
-	glUniform3f(loc, value.x, value.y, value.z);
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform3f(loc, value.x, value.y, value.z);
+	});
 }
 
-void Program::setUniform4f( const GLchar *name, const glm::vec4 &value )
+void Program::setUniform4f( const std::string &name, const glm::vec4 &value )
 {
-	GLint loc = glGetUniformLocation(_glProgram, name);
-	glUniform4f(loc, value.x, value.y, value.z, value.w);
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform4f(loc, value.x, value.y, value.z, value.w);
+	});
 }
 
-void Program::setUniformMat2( const GLchar *name, const glm::mat2 &value )
+void Program::setUniformMat2( const std::string &name, const glm::mat2 &value )
 {
-	GLint loc = glGetUniformLocation(_glProgram, name);
-	glUniformMatrix2fv(loc, 1, GL_FALSE, glm::value_ptr(value));
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniformMatrix2fv(loc, 1, GL_FALSE, glm::value_ptr(value));
+	});
 }
 
-void Program::setUniformMat3( const GLchar *name, const glm::mat3 &value )
+void Program::setUniformMat3( const std::string &name, const glm::mat3 &value )
 {
-	GLint loc = glGetUniformLocation(_glProgram, name);
-	glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(value));
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(value));
+	});
 }
 
-void Program::setUniformMat4( const GLchar *name, const glm::mat4 &value )
+void Program::setUniformMat4( const std::string &name, const glm::mat4 &value )
 {
-	GLint loc = glGetUniformLocation(_glProgram, name);
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
+	});
 }
 
-void Program::applyInnerUniforms(const glm::mat4 modelView)
+void Program::setUniformiv( const std::string &name, int *values, unsigned int count )
+{
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform1iv(loc, count, values);
+	});
+}
+
+void Program::setUniformfv( const std::string &name, float *values, unsigned int count )
+{
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform1fv(loc, count, values);
+	});
+}
+
+void Program::setUniformuiv( const std::string &name, unsigned int *values, unsigned int count )
+{
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform1uiv(loc, count, values);
+	});
+}
+
+void Program::setUniform2fv( const std::string &name, const glm::vec2 *values, unsigned int count )
+{
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform2fv(loc, count, glm::value_ptr(*values));
+	});
+}
+
+void Program::setUniform3fv( const std::string &name, const glm::vec3 *values, unsigned int count )
+{
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform3fv(loc, count, glm::value_ptr(*values));
+	});
+}
+
+void Program::setUniform4fv( const std::string &name, const glm::vec4 *values, unsigned int count )
+{
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniform4fv(loc, count, glm::value_ptr(*values));
+	});
+}
+
+void Program::setUniformMat2v( const std::string &name, const glm::mat2 *values, unsigned int count )
+{
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniformMatrix2fv(loc, count, GL_FALSE, glm::value_ptr(*values));
+	});
+}
+
+void Program::setUniformMat3v( const std::string &name, const glm::mat3 *values, unsigned int count )
+{
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniformMatrix3fv(loc, count, GL_FALSE, glm::value_ptr(*values));
+	});
+}
+
+void Program::setUniformMat4v( const std::string &name, const glm::mat4 *values, unsigned int count )
+{
+	_uniforms.push_back([=]{
+		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+		glUniformMatrix4fv(loc, count, GL_FALSE, glm::value_ptr(*values));
+	});
+}
+
+void Program::applyInnerUniforms(const glm::mat4 &projection, const glm::mat4 &modelView)
 {
 	GLint loc = glGetUniformLocation(_glProgram, "u_ModelViewProjectMat");
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(Displayer::Instance()->getProjectionMatrix() * modelView));
+	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection * modelView));
 
 	loc = glGetUniformLocation(_glProgram, "u_ModelViewMat");
 	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(modelView));
+
+	loc = glGetUniformLocation(_glProgram, "u_ProjectMat");
+	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection));
 
 	loc = glGetUniformLocation(_glProgram, "u_NormalMat");
 	glm::mat3 normalMat(modelView[0].x, modelView[0].y, modelView[0].z
@@ -155,4 +250,40 @@ void Program::applyInnerUniforms(const glm::mat4 modelView)
 	normalMat = glm::inverse(normalMat);
 	normalMat = glm::transpose(normalMat);
 	glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(normalMat));
+}
+
+void Program::applyUniforms()
+{
+	for (auto iter : _uniforms){
+		iter();
+	}
+}
+
+std::string Program::getShaderType( GLenum glType )
+{
+	switch (glType)
+	{
+	case GL_VERTEX_SHADER:
+		return "GL_VERTEX_SHADER";
+
+	case GL_TESS_CONTROL_SHADER:
+		return "GL_TESS_CONTROL_SHADER";
+
+	case GL_TESS_EVALUATION_SHADER:
+		return "GL_TESS_EVALUATION_SHADER";
+
+	case GL_GEOMETRY_SHADER:
+		return "GL_GEOMETRY_SHADER";
+
+	case GL_FRAGMENT_SHADER:
+		return "GL_FRAGMENT_SHADER";
+
+	case GL_COMPUTE_SHADER:
+		return "GL_COMPUTE_SHADER";
+
+	default:
+		break;
+	}
+
+	return "UnKnow";
 }

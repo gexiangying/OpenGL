@@ -1,20 +1,21 @@
 #pragma once
 #include "Mesh.h"
+#include "RenderableObject.h"
 
 struct aiNode;
 struct aiScene;
-class MoveableNode
+class MoveableNode : public RenderableObject
 {
 public:
 	typedef std::vector<MoveableNode *> MoveableNodeList;
 	typedef std::vector<Mesh *> MeshList;
 
-	MoveableNode(aiNode *node, const aiScene *scene);
+	MoveableNode(aiNode *node, const aiScene *scene, const std::string &path);
 	~MoveableNode();
 
 	void setProgram(Program *program, bool needOverride = false);
 
-	void draw(const glm::mat4x4 &modelView);
+	virtual void draw(const Renderer *renderer) override;
 
 	void addMesh(Mesh *subMesh);
 	unsigned int getMeshsCount() const;
@@ -26,8 +27,8 @@ public:
 
 private:
 
-	void buildMeshs();
-	void buildChildren();
+	void buildMeshs(const std::string &path);
+	void buildChildren(const std::string &path);
 
 private:
 

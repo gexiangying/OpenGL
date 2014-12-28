@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# 创建的文件:09.12.2014 20:11:20
+# 创建的文件:28.12.2014 11:34:07
 
 mtllib teapot.mtl
 
@@ -5211,7 +5211,7 @@ vt 0.4375 0.9875 0.0000
 # 1034 texture coords
 
 g Teapot001
-usemtl wire_214229166
+usemtl 01___Default
 s 1
 f 1/1/1 2/2/2 3/3/3 4/4/4 
 f 4/4/4 3/3/3 5/5/5 6/6/6 

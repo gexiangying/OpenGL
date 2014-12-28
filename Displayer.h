@@ -14,8 +14,6 @@ public:
 	const std::string& GetWindowTitle();
 	void SetDisplayMode(unsigned int mode);
 	unsigned int GetDisplayMode();
-	void setProjectionMatrix(const glm::mat4 &mat){ _projectionMat = mat; };
-	const glm::mat4& getProjectionMatrix()const { return _projectionMat; };
 
 private:
 

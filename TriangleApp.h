@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stdio.h>
 #include "Application.h"
+#include "TextureManager.h"
 
 struct  Vertex
 {
@@ -30,7 +31,8 @@ public:
 
 		glBindVertexArray(GL_VAO);
 		//glActiveTexture(GL_TEXTURE0);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glActiveTexture(GL_TEXTURE1);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glBindVertexArray(0);
 	}
 
@@ -47,9 +49,10 @@ public:
 		glBindBuffer(GL_ARRAY_BUFFER, buf);
 		glBufferData(GL_ARRAY_BUFFER, 1024 * 1024, NULL, GL_STATIC_DRAW);
 		static const Vertex vertices[] = {
-			{0.25f, -0.25f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 5.0f, 0.0f},
-			{-0.25f, -0.25f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f},
-			{0.25f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 5.0f, 5.0f}
+			{-0.25f, -0.25f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f},
+			{0.25f, -0.25f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f},
+			{-0.25f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f},
+			{0.25f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f}
 		};
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
@@ -67,8 +70,8 @@ public:
 		glGenSamplers(2, samps);
 		glSamplerParameteri(samps[0], GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glSamplerParameteri(samps[0], GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glSamplerParameteri(samps[0], GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glSamplerParameteri(samps[0], GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glSamplerParameteri(samps[0], GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glSamplerParameteri(samps[0], GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		glSamplerParameteri(samps[1], GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glSamplerParameteri(samps[1], GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -79,7 +82,10 @@ public:
 		glGenTextures(2, textures);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindSampler(0, samps[1]);
+		glBindSampler(0, samps[0]);
+		//GLuint texid;
+		//TextureManager::Instance()->LoadTexture(texid, "datas/sponza/maps/prozor1.jpg");
+		//TextureManager::Instance()->BindTexture(texid);
 		glBindTexture(GL_TEXTURE_2D, textures[0]);
 		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, 256, 256);
 		float *data1 = GenTexture(256, 256, 1);
@@ -92,8 +98,8 @@ public:
 		float *data2 = GenTexture(256, 256, 50);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 256, GL_RGBA, GL_FLOAT, data2);
 
-		delete[] data1;
-		delete[] data2;
+		//delete[] data1;
+		//delete[] data2;
 	}
 
 protected:

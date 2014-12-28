@@ -6,9 +6,11 @@ int main(int argc, char *argv[]){
 		"TriangleApp",
 		"TransformFeedbackApp",
 		"ModelImporterApp",
-		"AdvanceLightApp"
+		"AdvanceLightApp",
+		"MaterialSystemApp",
+		"PostProcessingApp",
 	};
-	Application *app = ApplicationFactory::Instance()->CreateApplication(apps[3]);
+	Application *app = ApplicationFactory::Instance()->CreateApplication(apps[5]);
 
 	app->Init(argc, argv);
 	app->Run();

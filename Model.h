@@ -5,9 +5,11 @@
 #include <assimp/postprocess.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "MoveableNode.h"
+#include "RenderableObject.h"
 
 class MoveableNode;
-class Model
+class Renderer;
+class Model : public RenderableObject
 {
 public:
 	
@@ -16,15 +18,18 @@ public:
 
 	void setProgram(Program *program, bool needOverride = false);
 
-	void draw(const glm::mat4x4 &modelView);
+	virtual void draw(const Renderer *renderer) override;
 
 private:
 
 	void initLogs();
 	void loadScene();
+	void decomposeFilePath();
 
 private:
 	std::string _filePath;
+	std::string _fileName;
+	std::string _folderPath;
 	const aiScene *_aiScene;
 	MoveableNode *_rootNode;
 };
