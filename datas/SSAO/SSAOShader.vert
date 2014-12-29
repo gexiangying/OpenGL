@@ -1,10 +1,10 @@
-#version 400
-uniform mat4 ogre_ModelViewProjectMatrix;
-in vec4 vertex;
-in vec4 uv0;
+#version 430
+uniform mat4 u_ModelViewProjectMat;
+layout (location = 0) in vec4 vertex;
+layout (location = 1) in vec2 uv;
 out vec2 tcoord;
 void main()
 {
-	tcoord = uv0.st;
-	gl_Position = ogre_ModelViewProjectMatrix * vertex;
+	tcoord = uv;
+	gl_Position = u_ModelViewProjectMat * vertex;
 }

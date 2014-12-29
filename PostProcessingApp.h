@@ -142,7 +142,7 @@ public:
 
 	void SSAOSetup(){
 		glm::ivec2 size = Displayer::Instance()->GetWindowSize();
-		auto model = new Model("datas/teapot.obj");
+		auto model = new Model("datas/sponza/sponza.obj");
 		auto colorTexture = TextureManager::Instance()->CreateTexture(size.x, size.y, 1, GL_RGBA32F);
 		auto posTexture = TextureManager::Instance()->CreateTexture(size.x, size.y, 1, GL_RGBA32F);
 		auto norm_depthTexture = TextureManager::Instance()->CreateTexture(size.x, size.y, 1, GL_RGBA32F);
@@ -160,8 +160,8 @@ public:
 		model->setProgram(program);
 		_renderer.attachRenderableObject(model);
 
-		_rttTexture = SSAO(posTexture, norm_depthTexture, 0.02f, 2.0f, size);
-		auto blurTex = GaussBlur(_rttTexture, size, 4);
+		_rttTexture = SSAO(posTexture, norm_depthTexture, size);
+		auto blurTex = GaussBlur(_rttTexture, size, 2);
 
 		//////////////////////////////////////////////////////////////////////////
 		static const GLchar *V_ShaderSource[] = {
@@ -183,7 +183,7 @@ public:
 			"in vec2 v_uv;                                          \n"
 			"out vec4 color;                        \n"
 			"void main(){                        \n"
-			"	color = (texture(u_Texture0, v_uv) + texture(u_Texture1, v_uv)) * 0.5;     \n"
+			"	color = (texture(u_Texture0, v_uv));     \n"
 			"}                        \n"
 		};
 
@@ -390,7 +390,7 @@ public:
 		return outTexture;
 	}
 
-	GLuint SSAO(GLuint posTexture, GLuint normalTexture, float aoDensity, float contrasty, glm::ivec2 size){
+	GLuint SSAO(GLuint posTexture, GLuint normalTexture, glm::ivec2 size){
 		GLuint offsetSampU = 4;
 		GLuint offsetSampV = 4;
 		auto offsetTex = CreateRandomPointsImageInSphereSurface(offsetSampU, offsetSampV);
@@ -407,8 +407,11 @@ public:
 			auto program = new Program;
 			program->attachShader(GL_VERTEX_SHADER, "datas/SSAO/SSAOShader.vert");
 			program->attachShader(GL_FRAGMENT_SHADER, "datas/SSAO/SSAOShader.frag");
-			program->setUniformf("aoDensity", aoDensity);
-			program->setUniformf("contrasty", contrasty);
+			program->setUniformf("aoDensity", 0.03f);
+			program->setUniformf("sampleDepthViewSpace", 10.0f);
+			program->setUniformf("sampleLengthViewSpace", 10.0f);
+			program->setUniformf("edgeHighlight", 1.0f);
+			program->setUniformf("defaultAccessibility", 0.5f);
 			program->setUniform3f("OffsetTexSize", glm::vec3(offsetSampU, offsetSampV, offsetSampU * offsetSampV));
 			rq->setProgram(program);
 			auto sampler = TextureManager::Instance()->GetOrCreateSampler(GL_LINEAR, GL_CLAMP);
