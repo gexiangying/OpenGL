@@ -68,7 +68,7 @@ Mesh::~Mesh()
 {
 }
 
-void Mesh::draw(const Renderer *renderer)
+void Mesh::draw(const Renderer *renderer, const glm::mat4 &modelMatrix)
 {
 	if (0 < _drawElementCount){
 		auto camera = renderer->getCamera();

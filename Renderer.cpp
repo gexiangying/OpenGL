@@ -53,7 +53,7 @@ void Renderer::render()
 		glDepthMask(GL_FALSE);
 
 	for (auto iter : _renderableObjectList){
-		iter->draw(this);
+		iter->draw(this, glm::mat4());
 	}
 
 	if (!_enableDepthWrite)

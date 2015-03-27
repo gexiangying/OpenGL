@@ -10,7 +10,7 @@ public:
 	RenderQuad(float width, float height);
 	~RenderQuad();
 
-	virtual void draw(const Renderer *renderer);
+	virtual void draw(const Renderer *renderer, const glm::mat4 &modelMatrix) override;
 	void setProgram(Program *program);
 	void setTexture(unsigned int texUnit, GLuint texID, GLuint sampID);
 

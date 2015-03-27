@@ -78,11 +78,59 @@
     <ClInclude Include="PostProcessingApp.h">
       <Filter>Apps</Filter>
     </ClInclude>
+    <ClInclude Include="TriangleApp.h">
+      <Filter>Apps</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="AABoundingBox.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="OBoundingBox.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingSphere.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Array.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereShape.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseShapeDrawApp.h">
+      <Filter>Apps</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="CylinderShape.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
     <ClInclude Include="TransformFeedbackApp.h">
       <Filter>Apps</Filter>
     </ClInclude>
-    <ClInclude Include="TriangleApp.h">
-      <Filter>Apps</Filter>
+    <ClInclude Include="CapsuleShape.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxShape.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeRenderable.h">
+      <Filter>Foundation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +181,45 @@
     </ClCompile>
     <ClCompile Include="ApplicationMain.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="AABoundingBox.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="OBoundingBox.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingSphere.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereShape.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="CylinderShape.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="CapsuleShape.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxShape.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeRenderable.cpp">
+      <Filter>Foundation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

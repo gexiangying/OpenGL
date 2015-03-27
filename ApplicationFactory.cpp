@@ -5,6 +5,7 @@
 #include "AdvanceLightApp.h"
 #include "MaterialSystemApp.h"
 #include "PostProcessingApp.h"
+#include "BaseShapeDrawApp.h"
 
 ApplicationFactory::ApplicationFactory()
 {
@@ -40,6 +41,9 @@ Application* ApplicationFactory::CreateApplication( const std::string &type )
 
 	if (type == "PostProcessingApp")
 		return new PostProcessingApp;
+
+	if (type == "BaseShapeDrawApp")
+		return new BaseShapeDrawApp;
 
 	return nullptr;
 }

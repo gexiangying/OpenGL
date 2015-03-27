@@ -21,9 +21,9 @@ Model::~Model()
 	delete _rootNode;
 }
 
-void Model::draw(const Renderer *renderer)
+void Model::draw(const Renderer *renderer, const glm::mat4 &modelMatrix)
 {
-	_rootNode->draw(renderer);
+	_rootNode->draw(renderer, modelMatrix);
 }
 
 void Model::initLogs()

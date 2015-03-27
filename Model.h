@@ -18,7 +18,7 @@ public:
 
 	void setProgram(Program *program, bool needOverride = false);
 
-	virtual void draw(const Renderer *renderer) override;
+	virtual void draw(const Renderer *renderer, const glm::mat4 &modelMatrix) override;
 
 private:
 

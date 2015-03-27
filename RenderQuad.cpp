@@ -61,13 +61,13 @@ RenderQuad::~RenderQuad()
 {
 }
 
-void RenderQuad::draw( const Renderer *renderer )
+void RenderQuad::draw( const Renderer *renderer, const glm::mat4 &modelMatrix )
 {
 	init();
 	auto camera = renderer->getCamera();
 	if (!_program->isLinked())
 		_program->link();
-	_program->apply(camera->getProjectionMatrix(), camera->getViewMatrix());
+	_program->apply(camera->getProjectionMatrix(), camera->getViewMatrix() * modelMatrix);
 	for (auto iter : _textures){
 		glActiveTexture(GL_TEXTURE0 + iter.first);
 		TextureManager::Instance()->BindTexture(iter.second.first);

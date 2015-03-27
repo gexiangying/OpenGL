@@ -9,8 +9,9 @@ int main(int argc, char *argv[]){
 		"AdvanceLightApp",
 		"MaterialSystemApp",
 		"PostProcessingApp",
+		"BaseShapeDrawApp",
 	};
-	Application *app = ApplicationFactory::Instance()->CreateApplication(apps[5]);
+	Application *app = ApplicationFactory::Instance()->CreateApplication(apps[6]);
 
 	app->Init(argc, argv);
 	app->Run();

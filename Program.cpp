@@ -90,7 +90,7 @@ void Program::apply(const glm::mat4 &projection, const glm::mat4 &modelView)
 
 void Program::setUniformi( const std::string &name, int value )
 {
-	_uniforms.push_back([=]{
+	_uniforms[name] = ([=]{
 		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
 		glUniform1i(loc, value);
 	});
@@ -98,7 +98,7 @@ void Program::setUniformi( const std::string &name, int value )
 
 void Program::setUniformf( const std::string &name, float value )
 {
-	_uniforms.push_back([=]{
+	_uniforms[name] = ([=]{
 		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
 		glUniform1f(loc, value);
 	});
@@ -106,7 +106,7 @@ void Program::setUniformf( const std::string &name, float value )
 
 void Program::setUniformui( const std::string &name, unsigned int value )
 {
-	_uniforms.push_back([=]{
+	_uniforms[name] = ([=]{
 		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
 		glUniform1ui(loc, value);
 	});
@@ -114,7 +114,7 @@ void Program::setUniformui( const std::string &name, unsigned int value )
 
 void Program::setUniform2f( const std::string &name, const glm::vec2 &value )
 {
-	_uniforms.push_back([=]{
+	_uniforms[name] = ([=]{
 		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
 		glUniform2f(loc, value.x, value.y);
 	});
@@ -122,7 +122,7 @@ void Program::setUniform2f( const std::string &name, const glm::vec2 &value )
 
 void Program::setUniform3f( const std::string &name, const glm::vec3 &value )
 {
-	_uniforms.push_back([=]{
+	_uniforms[name] = ([=]{
 		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
 		glUniform3f(loc, value.x, value.y, value.z);
 	});
@@ -130,7 +130,7 @@ void Program::setUniform3f( const std::string &name, const glm::vec3 &value )
 
 void Program::setUniform4f( const std::string &name, const glm::vec4 &value )
 {
-	_uniforms.push_back([=]{
+	_uniforms[name] = ([=]{
 		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
 		glUniform4f(loc, value.x, value.y, value.z, value.w);
 	});
@@ -138,7 +138,7 @@ void Program::setUniform4f( const std::string &name, const glm::vec4 &value )
 
 void Program::setUniformMat2( const std::string &name, const glm::mat2 &value )
 {
-	_uniforms.push_back([=]{
+	_uniforms[name] = ([=]{
 		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
 		glUniformMatrix2fv(loc, 1, GL_FALSE, glm::value_ptr(value));
 	});
@@ -146,7 +146,7 @@ void Program::setUniformMat2( const std::string &name, const glm::mat2 &value )
 
 void Program::setUniformMat3( const std::string &name, const glm::mat3 &value )
 {
-	_uniforms.push_back([=]{
+	_uniforms[name] = ([=]{
 		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
 		glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(value));
 	});
@@ -154,83 +154,83 @@ void Program::setUniformMat3( const std::string &name, const glm::mat3 &value )
 
 void Program::setUniformMat4( const std::string &name, const glm::mat4 &value )
 {
-	_uniforms.push_back([=]{
+	_uniforms[name] = ([=]{
 		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
 		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
 	});
 }
 
-void Program::setUniformiv( const std::string &name, int *values, unsigned int count )
-{
-	_uniforms.push_back([=]{
-		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
-		glUniform1iv(loc, count, values);
-	});
-}
-
-void Program::setUniformfv( const std::string &name, float *values, unsigned int count )
-{
-	_uniforms.push_back([=]{
-		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
-		glUniform1fv(loc, count, values);
-	});
-}
-
-void Program::setUniformuiv( const std::string &name, unsigned int *values, unsigned int count )
-{
-	_uniforms.push_back([=]{
-		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
-		glUniform1uiv(loc, count, values);
-	});
-}
-
-void Program::setUniform2fv( const std::string &name, const glm::vec2 *values, unsigned int count )
-{
-	_uniforms.push_back([=]{
-		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
-		glUniform2fv(loc, count, glm::value_ptr(*values));
-	});
-}
-
-void Program::setUniform3fv( const std::string &name, const glm::vec3 *values, unsigned int count )
-{
-	_uniforms.push_back([=]{
-		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
-		glUniform3fv(loc, count, glm::value_ptr(*values));
-	});
-}
-
-void Program::setUniform4fv( const std::string &name, const glm::vec4 *values, unsigned int count )
-{
-	_uniforms.push_back([=]{
-		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
-		glUniform4fv(loc, count, glm::value_ptr(*values));
-	});
-}
-
-void Program::setUniformMat2v( const std::string &name, const glm::mat2 *values, unsigned int count )
-{
-	_uniforms.push_back([=]{
-		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
-		glUniformMatrix2fv(loc, count, GL_FALSE, glm::value_ptr(*values));
-	});
-}
-
-void Program::setUniformMat3v( const std::string &name, const glm::mat3 *values, unsigned int count )
-{
-	_uniforms.push_back([=]{
-		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
-		glUniformMatrix3fv(loc, count, GL_FALSE, glm::value_ptr(*values));
-	});
-}
-
-void Program::setUniformMat4v( const std::string &name, const glm::mat4 *values, unsigned int count )
-{
-	_uniforms.push_back([=]{
-		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
-		glUniformMatrix4fv(loc, count, GL_FALSE, glm::value_ptr(*values));
-	});
-}
+//void Program::setUniformiv( const std::string &name, int *values, unsigned int count )
+//{
+//	_uniforms.push_back([=]{
+//		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+//		glUniform1iv(loc, count, values);
+//	});
+//}
+//
+//void Program::setUniformfv( const std::string &name, float *values, unsigned int count )
+//{
+//	_uniforms.push_back([=]{
+//		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+//		glUniform1fv(loc, count, values);
+//	});
+//}
+//
+//void Program::setUniformuiv( const std::string &name, unsigned int *values, unsigned int count )
+//{
+//	_uniforms.push_back([=]{
+//		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+//		glUniform1uiv(loc, count, values);
+//	});
+//}
+//
+//void Program::setUniform2fv( const std::string &name, const glm::vec2 *values, unsigned int count )
+//{
+//	_uniforms.push_back([=]{
+//		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+//		glUniform2fv(loc, count, glm::value_ptr(*values));
+//	});
+//}
+//
+//void Program::setUniform3fv( const std::string &name, const glm::vec3 *values, unsigned int count )
+//{
+//	_uniforms.push_back([=]{
+//		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+//		glUniform3fv(loc, count, glm::value_ptr(*values));
+//	});
+//}
+//
+//void Program::setUniform4fv( const std::string &name, const glm::vec4 *values, unsigned int count )
+//{
+//	_uniforms.push_back([=]{
+//		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+//		glUniform4fv(loc, count, glm::value_ptr(*values));
+//	});
+//}
+//
+//void Program::setUniformMat2v( const std::string &name, const glm::mat2 *values, unsigned int count )
+//{
+//	_uniforms.push_back([=]{
+//		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+//		glUniformMatrix2fv(loc, count, GL_FALSE, glm::value_ptr(*values));
+//	});
+//}
+//
+//void Program::setUniformMat3v( const std::string &name, const glm::mat3 *values, unsigned int count )
+//{
+//	_uniforms.push_back([=]{
+//		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+//		glUniformMatrix3fv(loc, count, GL_FALSE, glm::value_ptr(*values));
+//	});
+//}
+//
+//void Program::setUniformMat4v( const std::string &name, const glm::mat4 *values, unsigned int count )
+//{
+//	_uniforms.push_back([=]{
+//		GLint loc = glGetUniformLocation(_glProgram, name.c_str());
+//		glUniformMatrix4fv(loc, count, GL_FALSE, glm::value_ptr(*values));
+//	});
+//}
 
 void Program::applyInnerUniforms(const glm::mat4 &projection, const glm::mat4 &modelView)
 {
@@ -255,7 +255,7 @@ void Program::applyInnerUniforms(const glm::mat4 &projection, const glm::mat4 &m
 void Program::applyUniforms()
 {
 	for (auto iter : _uniforms){
-		iter();
+		iter.second();
 	}
 }
 

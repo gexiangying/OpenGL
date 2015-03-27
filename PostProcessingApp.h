@@ -162,6 +162,8 @@ public:
 
 		_rttTexture = SSAO(posTexture, norm_depthTexture, size);
 		auto blurTex = GaussBlur(_rttTexture, size, 2);
+		//auto elTex = ExtractBright(_rttTexture, 0.2f, size);
+		//auto blurTex = GaussBlur(elTex, size);
 
 		//////////////////////////////////////////////////////////////////////////
 		static const GLchar *V_ShaderSource[] = {
@@ -407,14 +409,14 @@ public:
 			auto program = new Program;
 			program->attachShader(GL_VERTEX_SHADER, "datas/SSAO/SSAOShader.vert");
 			program->attachShader(GL_FRAGMENT_SHADER, "datas/SSAO/SSAOShader.frag");
-			program->setUniformf("aoDensity", 0.03f);
+			program->setUniformf("aoDensity", 0.1f);
 			program->setUniformf("sampleDepthViewSpace", 10.0f);
 			program->setUniformf("sampleLengthViewSpace", 10.0f);
 			program->setUniformf("edgeHighlight", 1.0f);
 			program->setUniformf("defaultAccessibility", 0.5f);
 			program->setUniform3f("OffsetTexSize", glm::vec3(offsetSampU, offsetSampV, offsetSampU * offsetSampV));
 			rq->setProgram(program);
-			auto sampler = TextureManager::Instance()->GetOrCreateSampler(GL_LINEAR, GL_CLAMP);
+			auto sampler = TextureManager::Instance()->GetOrCreateSampler(GL_LINEAR, GL_REPEAT);
 			rq->setTexture(0, posTexture, sampler);
 			rq->setTexture(1, normalTexture, sampler);
 			rq->setTexture(2, offsetTex, sampler);

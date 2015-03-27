@@ -43,14 +43,14 @@ Mesh* MoveableNode::getMesh( unsigned int index )
 	return _subMesh[index];
 }
 
-void MoveableNode::draw( const Renderer *renderer )
+void MoveableNode::draw( const Renderer *renderer, const glm::mat4 &modelMatrix )
 {
 	for (auto iter : _children){
-		iter->draw(renderer);
+		iter->draw(renderer, modelMatrix);
 	}
 
 	for (auto iter : _subMesh){
-		iter->draw(renderer);
+		iter->draw(renderer, modelMatrix);
 	}
 }
 

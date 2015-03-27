@@ -29,6 +29,7 @@ public:
 		GLint border = 0);					//border size
 
 	GLuint CreateTexture(GLuint width, GLuint height, GLuint depth, GLuint internalformat, const void *data = nullptr);
+
 	GLuint GetOrCreateSampler(GLint filterParam, GLint wrapParam);
 
 	//free the memory for a texture

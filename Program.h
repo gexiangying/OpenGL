@@ -24,15 +24,15 @@ public:
 	void setUniformMat2(const std::string &name, const glm::mat2 &value);
 	void setUniformMat3(const std::string &name, const glm::mat3 &value);
 	void setUniformMat4(const std::string &name, const glm::mat4 &value);
-	void setUniformiv(const std::string &name, int *values, unsigned int count);
-	void setUniformfv(const std::string &name, float *values, unsigned int count);
-	void setUniformuiv(const std::string &name, unsigned int *values, unsigned int count);
-	void setUniform2fv(const std::string &name, const glm::vec2 *values, unsigned int count);
-	void setUniform3fv(const std::string &name, const glm::vec3 *values, unsigned int count);
-	void setUniform4fv(const std::string &name, const glm::vec4 *values, unsigned int count);
-	void setUniformMat2v(const std::string &name, const glm::mat2 *values, unsigned int count);
-	void setUniformMat3v(const std::string &name, const glm::mat3 *values, unsigned int count);
-	void setUniformMat4v(const std::string &name, const glm::mat4 *values, unsigned int count);
+	//void setUniformiv(const std::string &name, int *values, unsigned int count);
+	//void setUniformfv(const std::string &name, float *values, unsigned int count);
+	//void setUniformuiv(const std::string &name, unsigned int *values, unsigned int count);
+	//void setUniform2fv(const std::string &name, const glm::vec2 *values, unsigned int count);
+	//void setUniform3fv(const std::string &name, const glm::vec3 *values, unsigned int count);
+	//void setUniform4fv(const std::string &name, const glm::vec4 *values, unsigned int count);
+	//void setUniformMat2v(const std::string &name, const glm::mat2 *values, unsigned int count);
+	//void setUniformMat3v(const std::string &name, const glm::mat3 *values, unsigned int count);
+	//void setUniformMat4v(const std::string &name, const glm::mat4 *values, unsigned int count);
 
 	bool attachShader(GLenum type, const GLchar *sources[]);
 	bool attachShader(GLenum type, const std::string &file);
@@ -54,6 +54,6 @@ private:
 	bool _isLinked;
 	bool _isUsed;
 
-	std::vector<std::function<void()> > _uniforms;
+	std::map<std::string, std::function<void()> > _uniforms;
 };
 
