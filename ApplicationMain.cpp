@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
 		"PostProcessingApp",
 		"BaseShapeDrawApp",
 	};
-	Application *app = ApplicationFactory::Instance()->CreateApplication(apps[6]);
+	Application *app = ApplicationFactory::Instance()->CreateApplication(apps[2]);
 
 	app->Init(argc, argv);
 	app->Run();

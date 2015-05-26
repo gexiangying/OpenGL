@@ -77,7 +77,7 @@ void Mesh::draw(const Renderer *renderer, const glm::mat4 &modelMatrix)
 			_program->link();
 			initMaterial();
 		}
-		_program->apply(camera->getProjectionMatrix(), camera->getViewMatrix());
+		_program->apply(camera->getProjectionMatrix(), camera->getViewMatrix() * modelMatrix);
 
 		for (auto iter : _textureUnitMap){
 			glActiveTexture(GL_TEXTURE0 + iter.first);

@@ -4,7 +4,7 @@
 class BoxShape : public Shape
 {
 public:
-	BoxShape(float halfLength, float halfWidth, float halfHeight, const glm::mat4 &originMat = glm::mat4());
+	BoxShape(float halfLength, float halfHeight, float halfWidth, const glm::mat4 &originMat = glm::mat4());
 	~BoxShape();
 
 	void setHalfLength(float halfLength) { _halfLength = halfLength; };

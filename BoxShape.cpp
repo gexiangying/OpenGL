@@ -4,11 +4,11 @@
 #include "Array.h"
 
 
-BoxShape::BoxShape(float halfLength, float halfWidth, float halfHeight, const glm::mat4 &originMat)
+BoxShape::BoxShape(float halfLength, float halfHeight, float halfWidth, const glm::mat4 &originMat)
 	: Shape(ShapeType::BOX_SHAPE, originMat)
 	, _halfLength(halfLength)
-	, _halfWidth(halfWidth)
 	, _halfHeight(halfHeight)
+	, _halfWidth(halfWidth)
 {
 }
 

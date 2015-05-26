@@ -1,8 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 
-class AABoundingBox;
-class OBoundingBox;
+class BoundingBox;
 class BoundingSphere;
 class Ray
 {
@@ -15,8 +14,7 @@ public:
 	void setDirection(const glm::vec3 &dir) { _direction = dir; }
 	const glm::vec3& getDirection() const { return _direction; }
 
-	bool intersectBoundingVolume(const AABoundingBox &aabb);
-	bool intersectBoundingVolume(const OBoundingBox &obb);
+	bool intersectBoundingVolume(const BoundingBox &aabb);
 	bool intersectBoundingVolume(const BoundingSphere &bs);
 
 private:

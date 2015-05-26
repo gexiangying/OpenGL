@@ -73,22 +73,8 @@ public:
 
 	virtual void Setup() override {
 
-		//{
-		//	auto sr = new ShapeRenderable(new SphereShape(50.0f), 32);
-		//	auto material = new Material;
-		//	auto program = new Program;
-		//	program->attachShader(GL_VERTEX_SHADER, V_Shader);
-		//	program->attachShader(GL_FRAGMENT_SHADER, F_Shader);
-		//	material->setProgram(program);
-		//	GLuint texID;
-		//	TextureManager::Instance()->LoadTexture(texID, "datas/textures/land_shallow_topo_2048.jpg");
-		//	material->setDiffuseTexture(texID);
-		//	sr->setMaterial(material);
-		//	_renderer.attachRenderableObject(sr);
-		//}
-
 		{
-			auto sr = new ShapeRenderable(new BoxShape(20.0f, 20.0f, 20.0f), 1);
+			auto sr = new ShapeRenderable(new SphereShape(50.0f), ShapeRenderable::ShapeRenderType::SR_LINE, 32);
 			auto material = new Material;
 			auto program = new Program;
 			program->attachShader(GL_VERTEX_SHADER, V_Shader);
@@ -100,6 +86,20 @@ public:
 			sr->setMaterial(material);
 			_renderer.attachRenderableObject(sr);
 		}
+
+		//{
+		//	auto sr = new ShapeRenderable(new BoxShape(20.0f, 20.0f, 20.0f), 1);
+		//	auto material = new Material;
+		//	auto program = new Program;
+		//	program->attachShader(GL_VERTEX_SHADER, V_Shader);
+		//	program->attachShader(GL_FRAGMENT_SHADER, F_Shader);
+		//	material->setProgram(program);
+		//	GLuint texID;
+		//	TextureManager::Instance()->LoadTexture(texID, "datas/textures/land_shallow_topo_2048.jpg");
+		//	material->setDiffuseTexture(texID);
+		//	sr->setMaterial(material);
+		//	_renderer.attachRenderableObject(sr);
+		//}
 
 		//{
 		//	auto sr = new ShapeRenderable(new CylinderShape(50.0f, 100.0f), 32);

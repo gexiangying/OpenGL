@@ -9,6 +9,7 @@ Application * Application::_appPtr;
 
 Application::Application()
 	: _currentButton(-1)
+	, _running(false)
 {
 	_appPtr = this;
 	_camera = new Camera;
@@ -32,11 +33,12 @@ void Application::Render(double elapseTime)
 
 void Application::Run()
 {
+	_running = true;
 	_preFrameTime = std::time(nullptr);
 	//while (_running)
 	//{
 	//	std::time_t now = std::time(nullptr);
-	//	Render();
+	//	Render(now - _preFrameTime);
 	//	_preFrameTime = now;
 	//	glutSwapBuffers();
 	//}

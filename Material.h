@@ -37,6 +37,15 @@ public:
 	void setAmbientTexture(GLuint texID){ _ambientTexture = texID; };
 	GLuint getAmbientTexture() const { return _ambientTexture; }
 
+	void setDiffuseTextureSampler(GLuint sampID){ _diffuseTexSampler = sampID; };
+	GLuint getDiffuseTextureSampler() const { return _diffuseTexSampler; }
+
+	void setSpecularTextureSampler(GLuint sampID){ _specularTexSampler = sampID; };
+	GLuint getSpecularTextureSampler() const { return _specularTexSampler; }
+
+	void setAmbientTextureSampler(GLuint sampID){ _ambientTexSampler = sampID; };
+	GLuint getAmbientTextureSampler() const { return _ambientTexSampler; }
+
 private:
 
 	Program *_program;
@@ -49,6 +58,8 @@ private:
 	GLuint _diffuseTexture;
 	GLuint _specularTexture;
 	GLuint _ambientTexture;
-	GLuint _textureSampler;
+	GLuint _diffuseTexSampler;
+	GLuint _specularTexSampler;
+	GLuint _ambientTexSampler;
 };
 

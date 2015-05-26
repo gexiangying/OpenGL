@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,13 +19,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;GLM_SWIZZLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>./Deps/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -79,17 +79,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AABoundingBox.h" />
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="AdvanceLightApp.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationFactory.h" />
     <ClInclude Include="Array.h" />
+    <ClInclude Include="AssimpConverter.h" />
     <ClInclude Include="BaseShapeDrawApp.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="BoxShape.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CapsuleShape.h" />
     <ClInclude Include="CylinderShape.h" />
+    <ClInclude Include="DebugDrawer.h" />
     <ClInclude Include="Displayer.h" />
     <ClInclude Include="FrameBufferObject.h" />
     <ClInclude Include="Geometry.h" />
@@ -101,11 +103,9 @@
     <ClInclude Include="ModelImporterApp.h" />
     <ClInclude Include="MoveableNode.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="OBoundingBox.h" />
     <ClInclude Include="PostProcessingApp.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Ray.h" />
-    <ClInclude Include="Render.h" />
     <ClInclude Include="RenderableObject.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderQuad.h" />
@@ -118,15 +118,17 @@
     <ClInclude Include="TriangleApp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AABoundingBox.cpp" />
+    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ApplicationFactory.cpp" />
     <ClCompile Include="ApplicationMain.cpp" />
+    <ClCompile Include="AssimpConverter.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="BoxShape.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CapsuleShape.cpp" />
     <ClCompile Include="CylinderShape.cpp" />
+    <ClCompile Include="DebugDrawer.cpp" />
     <ClCompile Include="Displayer.cpp" />
     <ClCompile Include="FrameBufferObject.cpp" />
     <ClCompile Include="Geometry.cpp" />
@@ -135,10 +137,8 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="MoveableNode.cpp" />
     <ClCompile Include="Node.cpp" />
-    <ClCompile Include="OBoundingBox.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Ray.cpp" />
-    <ClCompile Include="Render.cpp" />
     <ClCompile Include="RenderableObject.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderQuad.cpp" />

@@ -84,7 +84,7 @@ public:
 	}
 
 	virtual void Setup() override {
-		SSAOSetup();
+		BloomSetup();
 	}
 
 	void BloomSetup(){

@@ -62,8 +62,7 @@ Material::Material()
 	_program->attachShader(GL_VERTEX_SHADER, Material_V_Shader);
 	_program->attachShader(GL_FRAGMENT_SHADER, Material_F_Shader);
 	_program->link();
-
-	_textureSampler = TextureManager::Instance()->GetOrCreateSampler(GL_LINEAR, GL_REPEAT);
+	_ambientTexture = _specularTexture = _diffuseTexSampler = TextureManager::Instance()->GetOrCreateSampler(GL_LINEAR, GL_REPEAT);
 }
 
 
@@ -84,19 +83,19 @@ void Material::apply( const glm::mat4 &projection, const glm::mat4 &modelView )
 		if (_diffuseTexture){
 			glActiveTexture(GL_TEXTURE0);
 			TextureManager::Instance()->BindTexture(_diffuseTexture);
-			TextureManager::Instance()->BindSampler(0, _textureSampler);
+			TextureManager::Instance()->BindSampler(0, _diffuseTexSampler);
 			_program->setUniformi("u_diffuseTex", 0);
 		}
 		if (_specularTexture){
 			glActiveTexture(GL_TEXTURE1);
 			TextureManager::Instance()->BindTexture(_specularTexture);
-			TextureManager::Instance()->BindSampler(1, _textureSampler);
+			TextureManager::Instance()->BindSampler(1, _specularTexSampler);
 			_program->setUniformi("u_specularTex", 1);
 		}
 		if (_ambientTexture){
 			glActiveTexture(GL_TEXTURE2);
 			TextureManager::Instance()->BindTexture(_ambientTexture);
-			TextureManager::Instance()->BindSampler(2, _textureSampler);
+			TextureManager::Instance()->BindSampler(2, _ambientTexSampler);
 			_program->setUniformi("u_ambientTex", 2);
 		}
 		_program->apply(projection, modelView);

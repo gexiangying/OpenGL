@@ -62,5 +62,7 @@ protected:
 
 	Camera *_camera;
 	Renderer _renderer;
+
+	bool _running;
 };
 

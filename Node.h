@@ -12,6 +12,8 @@ public:
 	~Node();
 
 	virtual void draw(const Renderer *renderer, const glm::mat4 &modelMatrix) override;
+	virtual BoundingSphere* getBoundingSphere() override;
+	virtual BoundingBox* getBoundingBox() override;
 
 	bool addChild(Node *node);
 	Node* getChild(unsigned int pos);
@@ -24,8 +26,13 @@ public:
 
 	glm::mat4 getNodeToWorldMatrix() const;
 	glm::mat4 getWorldToNodeMatrix() const;
-	void setMatrix(const glm::mat4 &mat) { _matrix = mat; }
+	void setMatrix(const glm::mat4 &mat);
 	const glm::mat4& getMatrix() const { return _matrix; }
+	void dirty();
+
+protected:
+
+	void expandBoundingBoxBy(const glm::vec3 &min, const glm::vec3 &max);
 
 protected:
 
@@ -33,5 +40,9 @@ protected:
 	NodeList _children;
 	glm::mat4 _matrix;
 	RenderableObject *_rObject;
+	BoundingSphere *_boundingSphere;
+	BoundingBox *_boundingBox;
+	bool _dirtyBS;
+	bool _dirtyBB;
 };
 

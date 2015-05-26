@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="资源文件">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -36,19 +32,7 @@
     <ClInclude Include="FrameBufferObject.h">
       <Filter>Foundation</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Foundation</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Foundation</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveableNode.h">
-      <Filter>Foundation</Filter>
-    </ClInclude>
     <ClInclude Include="Program.h">
-      <Filter>Foundation</Filter>
-    </ClInclude>
-    <ClInclude Include="Render.h">
       <Filter>Foundation</Filter>
     </ClInclude>
     <ClInclude Include="RenderableObject.h">
@@ -82,12 +66,6 @@
       <Filter>Apps</Filter>
     </ClInclude>
     <ClInclude Include="Ray.h">
-      <Filter>Foundation</Filter>
-    </ClInclude>
-    <ClInclude Include="AABoundingBox.h">
-      <Filter>Foundation</Filter>
-    </ClInclude>
-    <ClInclude Include="OBoundingBox.h">
       <Filter>Foundation</Filter>
     </ClInclude>
     <ClInclude Include="BoundingSphere.h">
@@ -132,6 +110,24 @@
     <ClInclude Include="ShapeRenderable.h">
       <Filter>Foundation</Filter>
     </ClInclude>
+    <ClInclude Include="AssimpConverter.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveableNode.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBox.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDrawer.h">
+      <Filter>Foundation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -149,19 +145,7 @@
     <ClCompile Include="FrameBufferObject.cpp">
       <Filter>Foundation</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Foundation</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Foundation</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveableNode.cpp">
-      <Filter>Foundation</Filter>
-    </ClCompile>
     <ClCompile Include="Program.cpp">
-      <Filter>Foundation</Filter>
-    </ClCompile>
-    <ClCompile Include="Render.cpp">
       <Filter>Foundation</Filter>
     </ClCompile>
     <ClCompile Include="RenderableObject.cpp">
@@ -179,16 +163,7 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>Foundation</Filter>
     </ClCompile>
-    <ClCompile Include="ApplicationMain.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Ray.cpp">
-      <Filter>Foundation</Filter>
-    </ClCompile>
-    <ClCompile Include="AABoundingBox.cpp">
-      <Filter>Foundation</Filter>
-    </ClCompile>
-    <ClCompile Include="OBoundingBox.cpp">
       <Filter>Foundation</Filter>
     </ClCompile>
     <ClCompile Include="BoundingSphere.cpp">
@@ -219,6 +194,27 @@
       <Filter>Foundation</Filter>
     </ClCompile>
     <ClCompile Include="ShapeRenderable.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="AssimpConverter.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationMain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveableNode.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>Foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDrawer.cpp">
       <Filter>Foundation</Filter>
     </ClCompile>
   </ItemGroup>
